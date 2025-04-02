@@ -1,40 +1,33 @@
 import { NextFunction, Response, Request } from 'express';
 import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
-
-export const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
+export const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
-        try {
-            const decodedToken = jwt.verify(
-                token,
-                process.env.JWT_SECRET as jwt.Secret
-            ) as {
-                userId: string;
-            };
 
-            const userId = decodedToken.userId;
+    if (!authHeader) {
+        return res.status(401).json({ error: 'Authorization header manquant' });
+    }
 
-            // Vérification de l'utilisateur dans la base de données PostgreSQL
-            const user = await prisma.user.findUnique({
-                where: { id: userId },
-            });
+    const token = authHeader.split(' ')[1];
 
-            if (!user) {
-                return res.status(401).json({ message: 'Utilisateur non trouvé' });
-            }
+    try {
+        const decodedToken = jwt.verify(
+            token,
+            process.env.JWT_SECRET as jwt.Secret
+        ) as {
+            userId: string;
+            admin: boolean;
+        };
 
-            req.query = {
-                userId: userId,
-            };
-            next();
-        } catch (error) {
-            return res.status(403).json({ message: 'Token invalide' });
-        }
-    } else {
-        res.sendStatus(401);
+        // Ajouter les informations du token à la requête
+        req.query = {
+            userId: decodedToken.userId,
+            admin: decodedToken.admin.toString(),
+        };
+
+        next();
+    } catch (error) {
+        console.error('Erreur de vérification du token JWT :', error);
+        return res.status(403).json({ error: 'Token invalide ou expiré' });
     }
 };
