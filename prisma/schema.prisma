@@ -19,3 +19,19 @@ model users {
   password String  
   admin    Boolean @default(false)
 }
+
+model HistoriqueCoureurs {
+  id            Int     @id @default(autoincrement())
+  classement    Int?
+  coureur       String
+  num_coureur   Int?
+  id_equipe     Int?
+  temps         String?
+  ecart         String?
+  annee         Int?
+  distance      Int?
+  nbr_etape     Int?
+  type_result   String?
+  total_seconde Int?
+  ecart_seconde Int?
+}
