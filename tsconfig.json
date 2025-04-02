@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES6",               // ou ESNext selon tes préférences
+    "module": "CommonJS",          // module système pour Node.js
+    "moduleResolution": "node",    // résolution des modules comme en Node.js
+    "esModuleInterop": true,       // permet l'importation des modules CommonJS
+    "strict": true,                // activer le mode strict
+    "skipLibCheck": true,          // ignorer les vérifications de types dans les bibliothèques
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],          // inclut tous les fichiers TypeScript dans le répertoire src
+  "exclude": ["node_modules"]       // exclut le répertoire node_modules
+}
