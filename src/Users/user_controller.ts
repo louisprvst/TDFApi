@@ -20,7 +20,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
     try {
         // Vérifier si l'utilisateur existe
-        const user = await prisma.user.findUnique({
+        const user = await prisma.users.findUnique({
             where: { username: username },
         });
 
