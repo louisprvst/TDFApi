@@ -1,13 +1,16 @@
 import express from 'express';
-import userRouter from './Users/user_router';
+import { user_router } from './Users/user_router';
 
 const app = express();
+const port = process.env.PORT || 2022;
 
 app.use(express.json());
 
 // Utiliser le routeur pour les utilisateurs
-app.use('/api', userRouter);
+app.use('/user', user_router);
 
-app.listen(3000, () => {
-    console.log('Serveur démarré sur http://localhost:3000');
-});
+export const server = app.listen(port);
+
+export function stopServer() {
+  server.close();
+}

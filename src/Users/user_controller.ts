@@ -3,6 +3,7 @@ import prisma from '../client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+// Fonction pour se connecter
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
     const { username, password } = req.body;
 
@@ -38,7 +39,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         // Générer un jeton JWT
         const token = jwt.sign(
             { userId: user.id, username: user.username, admin: user.admin },
-            process.env.JWT_SECRET as string,
+            process.env.JWT_SECRET as jwt.Secret,
             { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
         );
 
