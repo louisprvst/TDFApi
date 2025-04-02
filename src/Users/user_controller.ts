@@ -9,12 +9,12 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
     // Vérification des champs requis
     if (!username) {
-        res.status(400).json({ error: "Le champ 'username' est vide" });
+        res.status(400).send("Le champ 'username' est vide");
         return;
     }
 
     if (!password) {
-        res.status(400).json({ error: "Le champ 'password' est vide" });
+        res.status(400).send("Le champ 'password' est vide");
         return;
     }
 
@@ -25,14 +25,14 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         });
 
         if (!user) {
-            res.status(400).json({ error: "L'utilisateur n'existe pas" });
+            res.status(400).send("L'utilisateur n'existe pas");
             return;
         }
 
         // Vérifier le mot de passe
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            res.status(400).json({ error: 'Mot de passe incorrect' });
+            res.status(400).send('Mot de passe incorrect');
             return;
         }
 
@@ -43,9 +43,9 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         );
 
         // Répondre avec le token
-        res.status(200).json({ token });
+        res.status(200).send(token);
     } catch (error) {
         console.error('Erreur lors de la connexion :', error);
-        res.status(500).json({ error: 'Erreur interne du serveur' });
+        res.status(500).send('Erreur interne du serveur');
     }
 };
