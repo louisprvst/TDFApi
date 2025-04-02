@@ -1,12 +1,12 @@
 import express from 'express';
-import authRoutes from './Users/user_router';
+import userRouter from './Users/user_router';
 
 const app = express();
 
-app.use(express.json()); // Pour analyser les requêtes JSON
+app.use(express.json());
 
-// Ajouter les routes d'authentification
-app.use('/api/auth', authRoutes);
+// Utiliser le routeur pour les utilisateurs
+app.use('/api', userRouter);
 
 app.listen(3000, () => {
     console.log('Serveur démarré sur http://localhost:3000');
