@@ -4,10 +4,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 export const loginUser = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    if (!email) {
-        return res.status(400).json({ error: "Le champ 'email' est vide" });
+    if (!username) {
+        return res.status(400).json({ error: "Le champ 'username' est vide" });
     }
 
     if (!password) {
@@ -17,7 +17,7 @@ export const loginUser = async (req: Request, res: Response) => {
     try {
         // Vérifier si l'utilisateur existe
         const user = await prisma.user.findUnique({
-            where: { email: email },
+            where: { username: username },
         });
 
         if (!user) {
@@ -32,7 +32,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
         // Générer un jeton JWT
         const token = jwt.sign(
-            { userId: user.id, email: user.email },
+            { userId: user.id, username: user.username, admin: user.admin },
             process.env.JWT_SECRET as jwt.Secret,
             { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
         );
