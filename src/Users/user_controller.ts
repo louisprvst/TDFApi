@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import prisma from '../client';
-import bcrypt from 'bcrypt';
+import md5 from 'md5';
 import jwt from 'jsonwebtoken';
 
 // Fonction pour se connecter
@@ -30,8 +30,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         }
 
         // Vérifier le mot de passe
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
+        const hashedPassword = md5(password);
+        if (hashedPassword !== user.password) {
             res.status(400).send('Mot de passe incorrect');
             return;
         }
