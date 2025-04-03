@@ -3,7 +3,7 @@ import { user_router } from './Users/user_router';
 import { coureur_router } from './Coureurs/coureur_router';
 
 const app = express();
-const port = process.env.PORT || 11048;
+const port = 11048;
 
 app.use(express.json());
 
@@ -13,7 +13,9 @@ app.use('/user', user_router);
 // Utiliser le routeur pour les coureurs
 app.use('/coureurs', coureur_router);
 
-export const server = app.listen(port);
+export const server = app.listen(port, "0.0.0.0", () => {
+  console.log('Serveur démarré sur le port ${port}');
+});
 
 export function stopServer() {
   server.close();

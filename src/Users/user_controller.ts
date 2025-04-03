@@ -87,9 +87,115 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
             },
         });
 
-        res.status(201).send(`Utilisateur créé avec succès : ${newUser.username}`);
+        res.status(201).send(true);
     } catch (error) {
         console.error('Erreur lors de l\'enregistrement :', error);
+        res.status(500).send('Erreur interne du serveur');
+    }
+};
+
+// Fonction pour récupérer tous les utilisateurs
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
+    try {
+        // Récupérer tous les utilisateurs depuis la base de données
+        const users = await prisma.users.findMany({
+            select: {
+                id: true,
+                username: true,
+                admin: true,
+            },
+        });
+
+        // Vérifier si des utilisateurs ont été trouvés
+        if (!users || users.length === 0) {
+            res.status(404).send('Aucun utilisateur trouvé');
+            return;
+        }
+
+        // Renvoyer les utilisateurs sous forme de JSON
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des utilisateurs :', error);
+        res.status(500).send('Erreur interne du serveur');
+    }
+};
+
+// Fonction pour supprimer un utilisateur
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+
+    // Vérification de l'ID
+    if (!id) {
+        res.status(400).send("L'ID de l'utilisateur est requis");
+        return;
+    }
+
+    try {
+        // Vérifier si l'utilisateur existe
+        const user = await prisma.users.findUnique({
+            where: { id: parseInt(id) },
+        });
+
+        if (!user) {
+            res.status(404).send("L'utilisateur n'existe pas");
+            return;
+        }
+
+        // Supprimer l'utilisateur
+        await prisma.users.delete({
+            where: { id: parseInt(id) },
+        });
+
+        res.status(200).send(`Utilisateur avec l'ID ${id} supprimé avec succès`);
+    } catch (error) {
+        console.error('Erreur lors de la suppression de l\'utilisateur :', error);
+        res.status(500).send('Erreur interne du serveur');
+    }
+};
+
+// Fonction pour modifier un utilisateur
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const { username, password, admin } = req.body;
+
+    // Vérification de l'ID
+    if (!id) {
+        res.status(400).send("L'ID de l'utilisateur est requis");
+        return;
+    }
+
+    // Vérification des champs à mettre à jour
+    if (!username && !password && admin === undefined) {
+        res.status(400).send("Aucun champ à mettre à jour n'a été fourni");
+        return;
+    }
+
+    try {
+        // Vérifier si l'utilisateur existe
+        const user = await prisma.users.findUnique({
+            where: { id: parseInt(id) },
+        });
+
+        if (!user) {
+            res.status(404).send("L'utilisateur n'existe pas");
+            return;
+        }
+
+        // Préparer les données à mettre à jour
+        const updatedData: any = {};
+        if (username) updatedData.username = username;
+        if (password) updatedData.password = md5(password);
+        if (admin !== undefined) updatedData.admin = admin;
+
+        // Mettre à jour l'utilisateur
+        const updatedUser = await prisma.users.update({
+            where: { id: parseInt(id) },
+            data: updatedData,
+        });
+
+        res.status(200).send(`Utilisateur avec l'ID ${id} mis à jour avec succès`);
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour de l\'utilisateur :', error);
         res.status(500).send('Erreur interne du serveur');
     }
 };
