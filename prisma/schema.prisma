@@ -29,3 +29,16 @@ model historique_coureurs {
   total_seconde Int?
   ecart_seconde Int?
 }
+
+model etapes {
+  id           Int      @id @default(autoincrement())
+  numero_etape Int
+  date         DateTime
+  depart       String
+  arrivee      String
+  distance     Float
+  type         String
+  denivele     Int
+  difficulte   String
+  description  String?
+}
