@@ -8,6 +8,7 @@ export const getNomsCoureurs = async (req: Request, res: Response): Promise<void
         const coureurs = await prisma.historiqueCoureurs.findMany({
             select: { coureur: true },
             distinct: ['coureur'],
+            take: 10,
         });
 
         // Vérifier si des coureurs ont été trouvés
