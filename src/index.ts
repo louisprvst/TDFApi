@@ -3,7 +3,7 @@ import { user_router } from './Users/user_router';
 import { coureur_router } from './Coureurs/coureur_router';
 
 const app = express();
-const port = process.env.PORT || 2022;
+const port = process.env.PORT || 11048;
 
 app.use(express.json());
 
