@@ -14,7 +14,7 @@ model users {
   admin    Boolean @default(false)
 }
 
-model HistoriqueCoureurs {
+model historique_coureurs {
   id            Int     @id @default(autoincrement())
   classement    Int?
   coureur       String

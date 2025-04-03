@@ -42,8 +42,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
             process.env.JWT_SECRET as jwt.Secret,
         );
 
-        // Répondre avec le token
-        res.status(200).send(token);
+        // Répondre avec le token et true
+        res.status(200).send({ token, success: true });
     } catch (error) {
         console.error('Erreur lors de la connexion :', error);
         res.status(500).send('Erreur interne du serveur');
