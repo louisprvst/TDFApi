@@ -2,6 +2,7 @@ import express from 'express';
 import { user_router } from './Users/user_router';
 import { coureur_router } from './Coureurs/coureur_router';
 import { etapes_router } from './Etapes/etapes_router';
+import { equipes_router } from './Equipes/equipes_router';
 
 const app = express();
 const port = 11048;
@@ -18,7 +19,7 @@ app.use('/coureurs', coureur_router);
 app.use('/etapes', etapes_router);
 
 // Utiliser le routeur pour les équipes
-app.use('/equipes', coureur_router);
+app.use('/equipes', equipes_router);
 
 export const server = app.listen(port, "0.0.0.0", () => {
   console.log(`Serveur démarré sur le port ${port}`);
