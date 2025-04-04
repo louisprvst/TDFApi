@@ -4,7 +4,7 @@ import prisma from '../client';
 // Fonction pour récupérer les noms des coureurs
 export const getNomsCoureurs = async (req: Request, res: Response): Promise<void> => {
     try {
-        // Récupération avec Prisma sans raw SQL
+        // Récupérer les noms des coureurs distincts
         const coureurs = await prisma.classements.findMany({
             select: { coureur: true },
             distinct: ['coureur'],
@@ -16,7 +16,7 @@ export const getNomsCoureurs = async (req: Request, res: Response): Promise<void
             return;
         }
 
-        // Renvoyer les noms des coureurs sous forme de JSON
+        // Renvoyer les noms des coureurs sous forme de tableau
         res.status(200).send(coureurs.map(c => c.coureur));
     } catch (error) {
         console.error('Erreur lors de la récupération des noms des coureurs :', error);

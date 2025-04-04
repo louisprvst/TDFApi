@@ -17,10 +17,6 @@ app.use('/coureurs', coureur_router);
 // Utiliser le routeur pour les étapes
 app.use('/etapes', etapes_router);
 
-export const server = app.listen(port, "0.0.0.0", () => {
-  console.log('Serveur démarré sur le port ${port}');
-});
-
 export function stopServer() {
   server.close();
 }
