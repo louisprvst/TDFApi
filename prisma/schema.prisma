@@ -14,20 +14,20 @@ model users {
   admin    Boolean @default(false)
 }
 
-model historique_coureurs {
-  id            Int     @id @default(autoincrement())
-  classement    Int?
-  coureur       String
-  num_coureur   Int?
-  id_equipe     Int?
-  temps         String?
-  ecart         String?
-  annee         Int?
-  distance      Int?
-  nbr_etape     Int?
-  type_result   String?
-  total_seconde Int?
-  ecart_seconde Int?
+model classements {
+  id              Int     @id @default(autoincrement())
+  classement      Int?
+  coureur         String
+  num_coureur     Int?
+  id_equipe       Int?
+  temps           String?
+  ecart           String?
+  annee           Int?
+  distance        Int?
+  nbr_etape       Int?
+  type_de_resultat String?
+  total_secondes  Int?
+  ecart_secondes  Int?
 }
 
 model etapes {
@@ -41,4 +41,16 @@ model etapes {
   denivele     Int
   difficulte   String
   description  String?
+}
+
+model equipes {
+  id                Int      @id @default(autoincrement())
+  nom               String
+  pays              String?
+  directeur_sportif String?
+  annee_creation    Int?
+  sponsor           String?
+  categorie         String?
+  couleur_maillot   String?
+  description       String?
 }

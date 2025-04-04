@@ -5,7 +5,7 @@ import prisma from '../client';
 export const getNomsCoureurs = async (req: Request, res: Response): Promise<void> => {
     try {
         // Récupération avec Prisma sans raw SQL
-        const coureurs = await prisma.historique_coureurs.findMany({
+        const coureurs = await prisma.classements.findMany({
             select: { coureur: true },
             distinct: ['coureur'],
         });
@@ -36,7 +36,7 @@ export const getCoureursByAnnee = async (req: Request, res: Response): Promise<v
 
     try {
         // Récupérer les coureurs pour l'année spécifiée
-        const coureurs = await prisma.historique_coureurs.findMany({
+        const coureurs = await prisma.classements.findMany({
             where: { annee: parseInt(annee) },
         });
 
