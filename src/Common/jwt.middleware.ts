@@ -1,7 +1,7 @@
-import { NextFunction, Response, Request } from 'express';
+import { NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-export const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
+export const verifyJWT = (req: any, res: any, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
