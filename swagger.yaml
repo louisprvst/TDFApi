@@ -1,0 +1,207 @@
+openapi: 3.0.0
+info:
+  title: TDFApi
+  version: 1.0.0
+  description: API pour gérer les utilisateurs, coureurs, étapes et équipes du TDF
+servers:
+  - url: 62.72.18.63:11048
+    description: Serveur de production de l'api TDFApi
+
+tags:
+  - name: Users
+    description: Gestion des utilisateurs
+  - name: Coureurs
+    description: Gestion des coureurs
+  - name: Étapes
+    description: Gestion des étapes
+  - name: Équipes
+    description: Gestion des équipes
+
+paths:
+
+  /user/login:
+    post:
+      tags:
+        - Users
+      summary: Connecte un utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Succès de la connexion
+        '400':
+          description: Champs manquants ou mot de passe incorrect
+        '500':
+          description: Erreur interne du serveur
+
+  /user/register:
+    post:
+      tags:
+        - Users
+      summary: Enregistre un nouvel utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Utilisateur créé
+        '400':
+          description: Nom d'utilisateur déjà pris ou champs manquants
+        '500':
+          description: Erreur interne du serveur
+
+  /user/list:
+    get:
+      tags:
+        - Users
+      summary: Récupère la liste des utilisateurs
+      responses:
+        '200':
+          description: Liste des utilisateurs
+        '404':
+          description: Aucun utilisateur trouvé
+        '500':
+          description: Erreur interne du serveur
+
+  /user/delete/{id}:
+    delete:
+      tags:
+        - Users
+      summary: Supprime un utilisateur par son ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Utilisateur supprimé
+        '404':
+          description: Utilisateur non trouvé
+        '500':
+          description: Erreur interne du serveur
+
+  /user/update/{id}:
+    patch:
+      tags:
+        - Users
+      summary: Met à jour un utilisateur
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                admin:
+                  type: boolean
+      responses:
+        '200':
+          description: Utilisateur mis à jour
+        '404':
+          description: Utilisateur non trouvé
+        '500':
+          description: Erreur interne du serveur
+
+  /coureurs/noms:
+    get:
+      tags:
+        - Coureurs
+      summary: Récupère les noms des coureurs
+      responses:
+        '200':
+          description: Liste des noms des coureurs
+        '404':
+          description: Aucun coureur trouvé
+        '500':
+          description: Erreur interne du serveur
+
+  /coureurs/{annee}:
+    get:
+      tags:
+        - Coureurs
+      summary: Récupère les coureurs pour une année donnée
+      parameters:
+        - name: annee
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des coureurs pour l'année
+        '404':
+          description: Aucun coureur trouvé pour l'année
+        '500':
+          description: Erreur interne du serveur
+
+  /etapes:
+    get:
+      tags:
+        - Étapes
+      summary: Récupère toutes les étapes
+      responses:
+        '200':
+          description: Liste des étapes
+        '404':
+          description: Aucune étape trouvée
+        '500':
+          description: Erreur interne du serveur
+
+  /etapes/{annee}:
+    get:
+      tags:
+        - Étapes
+      summary: Récupère les étapes pour une année donnée
+      parameters:
+        - name: annee
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Liste des étapes pour l'année
+        '404':
+          description: Aucune étape trouvée pour l'année
+        '500':
+          description: Erreur interne du serveur
+
+  /equipes:
+    get:
+      tags:
+        - Équipes
+      summary: Récupère toutes les équipes
+      responses:
+        '200':
+          description: Liste des équipes
+        '500':
+          description: Erreur interne du serveur
