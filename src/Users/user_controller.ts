@@ -43,7 +43,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         );
 
         // Répondre avec le token, le statut admin et success
-        res.status(200).send({ token, success: true, admin: user.admin });
+        res.status(200).send({ token, success: true, admin: user.admin});
     } catch (error) {
         console.error('Erreur lors de la connexion :', error);
         res.status(500).send('Erreur interne du serveur');
